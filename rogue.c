@@ -1518,7 +1518,7 @@ void move_player_2(Player *player, Map *map, int dx, int dy, int speed) {
 
 void print_map_with_player_2(Map *map, Player *player) {
     clear();
-    int vision_radius = 4;
+    int vision_radius = 3;
     
     for (int y = 0; y < MAP_HEIGHT; y++) {
         for (int x = 0; x < MAP_WIDTH; x++) {
@@ -1984,7 +1984,7 @@ void move_toxic_enemy(Enemy *enemy, Player *player, Map *map) {
 }
 
 void move_boss_towards_player(Enemy *boss, Player *player) {
-    if (rand() % 100 < 90) { //ehtemal harekat boss
+    if (rand() % 100 < 50) { //ehtemal harekat boss
         if (boss->x < player->x) boss->x += boss->speed;
         else if (boss->x > player->x) boss->x -= boss->speed;
         
@@ -2400,7 +2400,13 @@ void game_menu(Map *map, Player *player) {
         } else if (ch == 'j' || ch == 'J') {
             player->cheat_mode = !player->cheat_mode;
             printw("Cheat mode %s!\n", player->cheat_mode ? "ON" : "OFF");
-        } else {
+        }else if(ch == 'w'){
+          printw("YOU WON..............");
+          clear();
+          //goto panir;
+        }
+        
+         else {
             speed = 1;
         }
 
@@ -2442,15 +2448,17 @@ void game_menu(Map *map, Player *player) {
         
          print_map_with_player(map, player);
 
-        int boss_defeated = 0;
+        int boss_defeated[10] = {0};
         for (int i = 0; i < map->enemy_count; i++) {
             if (map->enemies[i].is_boss && map->enemies[i].health <= 0) {
-                boss_defeated = 1;
+                boss_defeated[0] = 1;
+                //goto panir;
                 break;
             }
         }
 
-        if (boss_defeated) {
+        if (boss_defeated[0]) {
+            //panir:
             printw("YOU DEFEATED THE BOSS! VICTORY!\nPress any key to return to main menu...");
             refresh();
             getch();
